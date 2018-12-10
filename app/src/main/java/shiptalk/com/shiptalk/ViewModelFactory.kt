@@ -5,27 +5,29 @@ import android.app.Application
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import shiptalk.com.shiptalk.data.source.UserRepository
+import shiptalk.com.shiptalk.ui.login.LoginViewModel
 
-class ViewModelFactory private constructor(application: Application) : ViewModelProvider.NewInstanceFactory() {
+class ViewModelFactory private constructor(
+    private val application: Application,
+    private val userRepository: UserRepository
+) : ViewModelProvider.NewInstanceFactory() {
 
     override fun <T : ViewModel> create(modelClass: Class<T>) =
         with(modelClass) {
             when {
-                /*isAssignableFrom(::class.java) ->
-                    LoginViewModel(
-                        application,
-                        authRepository,
-                        fcmRepository,
-                        ordersRepository,
-                        orderInProgressRepository,
-                        userProfileRepository
-                    )*/
+                isAssignableFrom(LoginViewModel::class.java) ->
+                    LoginViewModel(userRepository)
                 else ->
                     throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
             }
         } as T
 
     companion object {
+
+        private fun provideUserRepository(): UserRepository {
+            return UserRepository.getInstance()
+        }
 
         @SuppressLint("StaticFieldLeak")
         @Volatile
@@ -34,15 +36,8 @@ class ViewModelFactory private constructor(application: Application) : ViewModel
         fun getInstance(application: Application) =
             INSTANCE ?: synchronized(ViewModelFactory::class.java) {
                 INSTANCE ?: ViewModelFactory(
-                    application/*,
-                    provideAuthRepository(application.applicationContext),
-                    provideUserProfileRepository(application.applicationContext),
-                    provideOrderInProgressRepository(application.applicationContext),
-                    ordersRepository = provideOrdersRepository(application, application.applicationContext),
-                    coverageRepository = provideCoverageRepository(application.applicationContext),
-                    fcmRepository = provideFCMRepository(application.applicationContext),
-                    promoRepository = providePromoRepository(application.applicationContext)*/
-
+                    application,
+                    provideUserRepository()
                 )
                     .also { INSTANCE = it }
             }

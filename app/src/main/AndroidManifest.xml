@@ -21,6 +21,10 @@
         </activity>
         <activity android:name=".ui.login.LoginActivity">
         </activity>
+        <activity android:name=".ui.chatroom.ChatRoomActivity">
+        </activity>
+        <activity android:name=".ui.messagethread.MessageThreadActivity">
+        </activity>
     </application>
 
 </manifest>

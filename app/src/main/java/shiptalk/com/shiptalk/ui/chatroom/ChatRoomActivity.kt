@@ -1,22 +1,22 @@
-package shiptalk.com.shiptalk.ui.login
+package shiptalk.com.shiptalk.ui.chatroom
 
 import android.os.Bundle
 import shiptalk.com.shiptalk.R
 import shiptalk.com.shiptalk.ui.BaseActivity
 
-class LoginActivity : BaseActivity() {
+class ChatRoomActivity : BaseActivity() {
 
-    private lateinit var viewModel: LoginViewModel
+    private lateinit var viewModel: ChatRoomViewModel
 
-    override fun obtainViewModel() = obtainViewModel(LoginViewModel::class.java)
+    override fun obtainViewModel() = obtainViewModel(ChatRoomViewModel::class.java)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.login_activity)
+        setContentView(R.layout.chat_room_activity)
         viewModel = obtainViewModel()
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.container, LoginFragment.newInstance())
+                .replace(R.id.container, ChatRoomFragment.newInstance())
                 .commitNow()
         }
     }

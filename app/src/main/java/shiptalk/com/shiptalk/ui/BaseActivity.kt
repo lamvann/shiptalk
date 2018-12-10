@@ -7,10 +7,9 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
-import shiptalk.com.shiptalk.BaseViewInterface
 import shiptalk.com.shiptalk.ViewModelFactory
 
-abstract class BaseActivity : AppCompatActivity(), BaseViewInterface {
+abstract class BaseActivity : AppCompatActivity() {
 
     /**
      * Obtains ViewModel for Activity from a ViewModelProvider
@@ -27,9 +26,5 @@ abstract class BaseActivity : AppCompatActivity(), BaseViewInterface {
         }.commit()
     }
 
-    /**
-     * This method must be used for all BaseActivity to be able to get the correct custom ViewModel
-     * override fun obtainViewModel() = obtainViewModel(CustomViewModel::class.java)
-     */
     abstract fun obtainViewModel(): BaseViewModel
 }

@@ -1,22 +1,22 @@
-package shiptalk.com.shiptalk.ui.login
+package shiptalk.com.shiptalk.ui.messagethread
 
 import android.os.Bundle
 import shiptalk.com.shiptalk.R
 import shiptalk.com.shiptalk.ui.BaseActivity
 
-class LoginActivity : BaseActivity() {
+class MessageThreadActivity : BaseActivity() {
 
-    private lateinit var viewModel: LoginViewModel
+    private lateinit var viewModel: MessageThreadViewModel
 
-    override fun obtainViewModel() = obtainViewModel(LoginViewModel::class.java)
+    override fun obtainViewModel() = obtainViewModel(MessageThreadViewModel::class.java)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.login_activity)
+        setContentView(R.layout.message_thread_activity)
         viewModel = obtainViewModel()
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.container, LoginFragment.newInstance())
+                .replace(R.id.container, MessageThreadFragment.newInstance())
                 .commitNow()
         }
     }

@@ -1,4 +1,7 @@
 package shiptalk.com.shiptalk.ui
 
-class BaseFragment {
+import androidx.fragment.app.Fragment
+import shiptalk.com.shiptalk.BaseViewInterface
+
+open class BaseFragment : Fragment(), BaseViewInterface {
 }
