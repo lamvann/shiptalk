@@ -31,5 +31,5 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.1-beta01'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1-beta01'
-    compile group: 'com.pubnub', name: 'pubnub-gson', version: '4.21.0'
+    implementation group: 'com.pubnub', name: 'pubnub-gson', version: '4.21.0'
 }
