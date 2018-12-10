@@ -1,10 +1,11 @@
-package shiptalk.com.shiptalk
+package shiptalk.com.shiptalk.ui
 
 import androidx.fragment.app.Fragment
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import shiptalk.com.shiptalk.R
 
 /**
  * A placeholder fragment containing a simple view.
