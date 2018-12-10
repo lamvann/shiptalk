@@ -57,3 +57,7 @@ freeline/
 freeline_project_description.json
 
 presentation/presentation-rci-release/
+.idea/codeStyles/codeStyleConfig.xml
+.idea/codeStyles/Project.xml
+.idea/misc.xml
+.idea/vcs.xml
