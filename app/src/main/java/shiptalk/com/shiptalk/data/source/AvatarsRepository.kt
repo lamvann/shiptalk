@@ -6,7 +6,7 @@ import javax.inject.Singleton
 class AvatarsRepository() : AvatarsDataSource {
 
     override fun getRandomAvatarForConversation(callback: AvatarsDataSource.GetRandomAvatarForConversationCallback): String {
-
+        return ""
     }
 
     companion object {

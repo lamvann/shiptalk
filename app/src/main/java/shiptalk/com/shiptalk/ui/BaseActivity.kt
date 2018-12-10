@@ -1,6 +1,8 @@
 package shiptalk.com.shiptalk.ui
 
 import android.app.Application
+import android.view.Window
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
@@ -27,4 +29,9 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     abstract fun obtainViewModel(): BaseViewModel
+
+    fun hideTopBar() {
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
+    }
 }

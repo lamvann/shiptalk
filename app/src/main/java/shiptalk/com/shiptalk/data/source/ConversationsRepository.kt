@@ -7,7 +7,7 @@ import javax.inject.Singleton
 class ConversationsRepository : ConversationsDataSource{
 
     override fun getActiveConversations(callback: ConversationsDataSource.GetActiveConversationsCallback): ArrayList<Conversation> {
-
+        return ArrayList<Conversation>()
     }
 
     companion object {
