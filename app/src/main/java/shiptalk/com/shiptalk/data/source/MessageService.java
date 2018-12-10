@@ -27,15 +27,15 @@ public class MessageService {
 
     public MessageService() {
         PNConfiguration pnConfiguration = new PNConfiguration();
-        pnConfiguration.setSubscribeKey(Constants.INSTANCE.getSUBSCRIBE_KEY());
-        pnConfiguration.setPublishKey(Constants.INSTANCE.getPUBLICS_KEY());
+        pnConfiguration.setSubscribeKey(Constants.SUBSCRIBE_KEY);
+        pnConfiguration.setPublishKey(Constants.PUBLICS_KEY);
         this.pubNub = new PubNub(pnConfiguration);
     }
 
     public void getChannelMessages(String channel, final MessageServiceCallBack<List<Message>> callBack) {
         pubNub.history()
                 .channel(channel)
-                .count(Constants.INSTANCE.getMESSAGE_HISTORY_COUNT())
+                .count(Constants.MESSAGE_HISTORY_COUNT)
                 .async(new PNCallback<PNHistoryResult>() {
                     @Override
                     public void onResponse(PNHistoryResult result, PNStatus status) {

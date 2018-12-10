@@ -1,8 +1,18 @@
 package shiptalk.com.shiptalk.data.source
 
-class UserRepository : UserDataSource{
-    override fun loginUser() {
+import shiptalk.com.shiptalk.data.User
 
+class UserRepository(
+    private val userLocalDataSource: UserLocalDataSource
+) : UserDataSource {
+    private var _user: User? = null
+    val user get() = _user
+
+    override fun getLoggedInUser(username: String): User? {
+        if (_user == null) {
+            _user = userLocalDataSource.getLoggedInUser(username)
+        }
+        return _user
     }
 
     companion object {
@@ -10,11 +20,11 @@ class UserRepository : UserDataSource{
         private var INSTANCE: UserRepository? = null
 
         @JvmStatic
-        fun getInstance() =
+        fun getInstance(userLocalDataSource: UserLocalDataSource) =
             INSTANCE ?: synchronized(UserRepository::class.java) {
                 INSTANCE
                     ?: UserRepository(
-
+                        userLocalDataSource
                     )
                         .also { INSTANCE = it }
             }

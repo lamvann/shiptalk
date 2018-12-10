@@ -5,7 +5,7 @@ import javax.inject.Singleton
 import javax.security.auth.callback.Callback
 
 @Singleton
-class MessagesRepository : MessagesDataSource {
+class MessagesRepository() : MessagesDataSource {
 
     override fun getMessagesFromChannel(channelId: String, callback: Callback): ArrayList<Message> {
         val arrayList = ArrayList<Message>()
