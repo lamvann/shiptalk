@@ -5,7 +5,7 @@ import shiptalk.com.shiptalk.data.ResponseError
 
 interface MessagesDataSource {
 
-    fun getMessagesFromChannel(channelId: String, callback: GetMessagesCallback)
+    fun getMessagesFromChannel(channelId: String, callback: GetMessagesCallback, newMessageCallback: GetNewMessageCallback)
 
     fun sendMessageForChannel(message: Map<String, Any>, channelId: String, callback: GetSentMessageCallback)
 
@@ -15,8 +15,13 @@ interface MessagesDataSource {
     }
 
     interface GetMessagesCallback{
-        fun onMessagesLoaded(messages: List<Message>)
+        fun onMessagesLoaded(messages: ArrayList<Message>)
         fun onMessagesNotLoaded(error: ResponseError)
+    }
+
+    interface GetNewMessageCallback{
+        fun onMessageLoaded(message: Message)
+        fun onMessageNotLoaded(error: ResponseError)
     }
 
     interface GetSentMessageCallback{

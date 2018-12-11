@@ -15,10 +15,10 @@ class ChatRoomViewModel(
     private val messagesRepository: MessagesRepository,
     private val userRepository: UserRepository
 ) : BaseViewModel(), MessagesDataSource.GetMessagesCallback, MessagesDataSource.GetSentMessageCallback,
-    MessagesDataSource.GetVoteCallback {
+    MessagesDataSource.GetVoteCallback, MessagesDataSource.GetNewMessageCallback {
 
-    private var _onMessagesLoaded : MutableLiveData<List<Message>> = MutableLiveData()
-    val onMessagesLoaded: MutableLiveData<List<Message>>
+    private var _onMessagesLoaded : MutableLiveData<ArrayList<Message>> = MutableLiveData()
+    val onMessagesLoaded: MutableLiveData<ArrayList<Message>>
         get() = _onMessagesLoaded
 
     private var _onNotVoted : MutableLiveData<Boolean> = MutableLiveData()
@@ -43,6 +43,22 @@ class ChatRoomViewModel(
         getMessagesFromChatRoomChannel()
     }
 
+    override fun onMessageLoaded(message: Message) {
+        _onMessagesResponse.value = true
+        if(_onMessagesLoaded.value == null){
+            val list = ArrayList<Message>()
+            list.add(message)
+            _onMessagesLoaded.value = list
+        }
+        else{
+            _onMessagesLoaded.value?.add(message)
+        }
+    }
+
+    override fun onMessageNotLoaded(error: ResponseError) {
+        _onMessagesNotLoaded.value = error.errorMessage
+    }
+
     override fun onVoted() {
         //No need to implement, data should be updated accordingly from pubnub
     }
@@ -59,7 +75,7 @@ class ChatRoomViewModel(
         _onSentMessage.value = false
     }
 
-    override fun onMessagesLoaded(messages: List<Message>) {
+    override fun onMessagesLoaded(messages: ArrayList<Message>) {
         _onMessagesLoaded.value = messages
         _onMessagesResponse.value = true
     }

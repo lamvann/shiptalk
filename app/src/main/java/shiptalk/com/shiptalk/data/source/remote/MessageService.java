@@ -6,20 +6,21 @@ import com.google.gson.JsonSyntaxException;
 import com.pubnub.api.PNConfiguration;
 import com.pubnub.api.PubNub;
 import com.pubnub.api.callbacks.PNCallback;
+import com.pubnub.api.callbacks.SubscribeCallback;
+import com.pubnub.api.enums.PNStatusCategory;
 import com.pubnub.api.models.consumer.PNPublishResult;
 import com.pubnub.api.models.consumer.PNStatus;
 import com.pubnub.api.models.consumer.history.PNHistoryItemResult;
 import com.pubnub.api.models.consumer.history.PNHistoryResult;
+import com.pubnub.api.models.consumer.pubsub.PNMessageResult;
+import com.pubnub.api.models.consumer.pubsub.PNPresenceEventResult;
 import org.jetbrains.annotations.NotNull;
 import shiptalk.com.shiptalk.data.Message;
 import shiptalk.com.shiptalk.data.ResponseError;
 import shiptalk.com.shiptalk.data.source.MessagesDataSource;
 import shiptalk.com.shiptalk.utils.Constants;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class MessageService implements MessagesDataSource {
 
@@ -28,7 +29,7 @@ public class MessageService implements MessagesDataSource {
     private final PubNub pubNub;
 
     @Override
-    public void getMessagesFromChannel(@NotNull String channelId, final @NotNull GetMessagesCallback callback) {
+    public void getMessagesFromChannel(@NotNull String channelId, final @NotNull GetMessagesCallback callback, final @NotNull GetNewMessageCallback newMessageCallback) {
         pubNub.history()
                 .channel(channelId)
                 .count(Constants.MESSAGE_HISTORY_COUNT)
@@ -40,38 +41,70 @@ public class MessageService implements MessagesDataSource {
                             List<Message> messages = new ArrayList<>();
                             for (PNHistoryItemResult pnHistoryItemResult : result.getMessages()) {
                                 Message message = jsonToMessage(pnHistoryItemResult.getEntry());
-                                if(message != null && message.isValidated()){
+                                if (message != null && message.isValidated()) {
                                     messages.add(message);
                                 }
                             }
                             callback.onMessagesLoaded(filterUniqueMessages(messages));
-                        }
-                        else{
+                        } else {
                             callback.onMessagesNotLoaded(new ResponseError(0, "Some error retrieving the PubNub messages"));
                         }
                     }
                 });
+
+        subscribeToChannel(channelId, newMessageCallback);
     }
 
-    private List<Message> filterUniqueMessages(List<Message> unfilteredMessages){
-        if(unfilteredMessages.size() < 2){
+    public void subscribeToChannel(@NotNull String channelId, final @NotNull GetNewMessageCallback callback) {
+        pubNub.subscribe().channels(Arrays.asList(channelId)).execute();
+        SubscribeCallback subscribeCallback = new SubscribeCallback() {
+            @Override
+            public void status(PubNub pubnub, PNStatus status) {
+                if (status.getCategory() == PNStatusCategory.PNUnexpectedDisconnectCategory) {
+                    // internet got lost, do some magic and call reconnect when ready
+                    pubnub.reconnect();
+                } else if (status.getCategory() == PNStatusCategory.PNTimeoutCategory) {
+                    // do some magic and call reconnect when ready
+                    pubnub.reconnect();
+                } else {
+                    callback.onMessageNotLoaded(new ResponseError(2, "Some error when subscribed"));
+                }
+            }
+
+            @Override
+            public void message(PubNub pubnub, PNMessageResult message) {
+                Message messageObject = jsonToMessage(message.getMessage());
+                if (messageObject != null && messageObject.isValidated()) {
+                    callback.onMessageLoaded(messageObject);
+                }
+            }
+
+            @Override
+            public void presence(PubNub pubnub, PNPresenceEventResult presence) {
+
+            }
+        };
+        pubNub.addListener(subscribeCallback);
+    }
+
+    private List<Message> filterUniqueMessages(List<Message> unfilteredMessages) {
+        if (unfilteredMessages.size() < 2) {
             return unfilteredMessages;
         }
 
-        HashMap<String, Message> uniqueMessages= new HashMap<>();
+        HashMap<String, Message> uniqueMessages = new HashMap<>();
 
-        for(Message message : unfilteredMessages){
+        for (Message message : unfilteredMessages) {
             //Check for concurrency
-            if(uniqueMessages.containsKey(message.getMessageId())){
+            if (uniqueMessages.containsKey(message.getMessageId())) {
                 Message messageUnique = uniqueMessages.get(message.getMessageId());
-                if((messageUnique != null)
+                if ((messageUnique != null)
                         && (messageUnique.getTimeCreated() != null)
                         && (message.getTimeCreated() != null)
-                        && messageUnique.getTimeCreated() < message.getTimeCreated()){
+                        && messageUnique.getTimeCreated() < message.getTimeCreated()) {
                     uniqueMessages.put(message.getMessageId(), message);
                 }
-            }
-            else{
+            } else {
                 uniqueMessages.put(message.getMessageId(), message);
             }
         }
@@ -87,10 +120,9 @@ public class MessageService implements MessagesDataSource {
     }
 
     private Message jsonToMessage(JsonElement jsonElement) {
-        try{
+        try {
             return gson.fromJson(jsonElement, Message.class);
-        }
-        catch(JsonSyntaxException e){
+        } catch (JsonSyntaxException e) {
             return null;
         }
     }
@@ -105,8 +137,7 @@ public class MessageService implements MessagesDataSource {
                     public void onResponse(PNPublishResult result, PNStatus status) {
                         if (!status.isError()) {
                             callback.onMessageSent();
-                        }
-                        else{
+                        } else {
                             callback.onMessageNotSent(new ResponseError(0, "Some error sending message"));
                         }
                     }
