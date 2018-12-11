@@ -11,4 +11,5 @@ object Constants {
     const val SHIPTALK_LOCAL_FILE = "shiptalk_local_file"
     const val USER_LOGGED_IN = "user_logged_in"
     const val CHATROOM_CHANNEL_ID = "aqua_channel"
+    const val MESSAGE_ID = "message_id"
 }
