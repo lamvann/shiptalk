@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import kotlinx.android.synthetic.main.abc_alert_dialog_button_bar_material.*
 import kotlinx.android.synthetic.main.login_fragment.*
 import shiptalk.com.shiptalk.R
 import shiptalk.com.shiptalk.ui.BaseFragment

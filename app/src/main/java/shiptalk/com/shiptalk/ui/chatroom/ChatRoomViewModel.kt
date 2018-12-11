@@ -43,6 +43,14 @@ class ChatRoomViewModel(
         getMessagesFromChatRoomChannel()
     }
 
+    override fun onVoted() {
+        //No need to implement, data should be updated accordingly from pubnub
+    }
+
+    override fun onNotVoted(error: ResponseError) {
+        onNotVoted.value = false
+    }
+
     override fun onMessageSent() {
         _onSentMessage.value = true
     }
@@ -61,15 +69,7 @@ class ChatRoomViewModel(
         _onMessagesResponse.value = false
     }
 
-    override fun onVoted() {
-        //No need to implement, data should be updated accordingly from pubnub
-    }
-
-    override fun onNotVoted(error: ResponseError) {
-        onNotVoted.value = false
-    }
-
-    fun getMessagesFromChatRoomChannel(){
+    fun getMessagesFromChatRoomChannel() {
         messagesRepository.getMessagesFromChannel(CHATROOM_CHANNEL_ID, this)
     }
 
