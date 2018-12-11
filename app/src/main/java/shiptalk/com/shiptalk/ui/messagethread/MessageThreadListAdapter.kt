@@ -22,7 +22,7 @@ class MessageThreadListAdapter(
     class ViewHolder(rowView: View) : RecyclerView.ViewHolder(rowView)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view: View = LayoutInflater.from(context).inflate(R.layout.layout_item_comment, parent, false)
+        val view: View = LayoutInflater.from(context).inflate(R.layout.layout_comment, parent, false)
         return ViewHolder(view)
     }
 

@@ -60,7 +60,8 @@ class MessageThreadFragment : BaseFragment(), OnMessageItemClickListener {
         )
         setObservers()
         messageId = arguments?.getString(MESSAGE_ID, null)
-        viewModel.getMessagesFromChatRoomChannel("$messageId _channel")
+        parentActivity.channelId = "$messageId _channel"
+        viewModel.getMessagesFromChatRoomChannel(parentActivity.channelId.toString())
         if(messageId == null){
             parentActivity.goToChatRoomActivity()
             parentActivity.finish()
