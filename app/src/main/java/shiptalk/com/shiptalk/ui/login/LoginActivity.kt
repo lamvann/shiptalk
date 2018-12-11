@@ -1,6 +1,8 @@
 package shiptalk.com.shiptalk.ui.login
 
 import android.os.Bundle
+import android.view.Window
+import kotlinx.android.synthetic.main.login_fragment.*
 import shiptalk.com.shiptalk.R
 import shiptalk.com.shiptalk.ui.BaseActivity
 
@@ -21,7 +23,4 @@ class LoginActivity : BaseActivity() {
                 .commitNow()
         }
     }
-
-
-
 }

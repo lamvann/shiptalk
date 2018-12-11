@@ -1,11 +1,15 @@
 package shiptalk.com.shiptalk.ui.login
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import kotlinx.android.synthetic.main.login_fragment.*
 import shiptalk.com.shiptalk.R
 import shiptalk.com.shiptalk.ui.BaseFragment
+import shiptalk.com.shiptalk.ui.chatroom.ChatRoomActivity
+import shiptalk.com.shiptalk.utils.Constants.EXTRA_USERNAME
 
 class LoginFragment : BaseFragment() {
 
@@ -27,6 +31,15 @@ class LoginFragment : BaseFragment() {
         super.onActivityCreated(savedInstanceState)
         parentActivity = activity as LoginActivity
         viewModel = parentActivity.obtainViewModel()
+
+        talk_button.setOnClickListener {
+            val username = choose_username.text
+            if (!username.isEmpty()) {
+                val intent = Intent(activity, ChatRoomActivity::class.java)
+                intent.putExtra(EXTRA_USERNAME, username)
+                startActivity(intent)
+            }
+        }
     }
 
     override fun setObservers() {
