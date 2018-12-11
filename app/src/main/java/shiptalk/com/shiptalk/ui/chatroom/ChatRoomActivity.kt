@@ -21,4 +21,9 @@ class ChatRoomActivity : BaseActivity() {
                 .commitNow()
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.getMessagesFromChatRoomChannel()
+    }
 }

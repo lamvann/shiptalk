@@ -1,9 +1,11 @@
 package shiptalk.com.shiptalk.ui.chatroom
 
 import android.os.Bundle
+import android.os.Message
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.chat_room_fragment.*
@@ -14,22 +16,23 @@ class ChatRoomFragment : BaseFragment(), OnMessageItemClickListener {
     private lateinit var viewModel: ChatRoomViewModel
 
     private lateinit var parentActivity: ChatRoomActivity
+
     private lateinit var chatRoomListAdapter: ChatRoomListAapter
     companion object {
-
         fun newInstance() = ChatRoomFragment()
 
     }
+
+    override fun onUpvoteClickListener(messageId: String) {
+        viewModel.upvoteMessage(messageId)
+    }
+
+    override fun onDownvoteClickListener(messageId: String) {
+        viewModel.downvoteMessage(messageId)
+    }
+
     override fun onMessageItemClickListener(messageId: String) {
 
-    }
-
-    override fun onUpvoteClickListener() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun onDownvoteClickListener() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun onCreateView(
@@ -53,7 +56,8 @@ class ChatRoomFragment : BaseFragment(), OnMessageItemClickListener {
 
         floatingActionButton.setOnClickListener {
             activity?.let {
-                NewPostDialog(it).show()
+                val dialog = NewPostDialog(it).show()
+
             }
         }
     }

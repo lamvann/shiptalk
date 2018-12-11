@@ -3,7 +3,7 @@ package shiptalk.com.shiptalk.ui.chatroom
 interface OnMessageItemClickListener {
     fun onMessageItemClickListener(messageId: String)
 
-    fun onUpvoteClickListener()
+    fun onUpvoteClickListener(messageId: String)
 
-    fun onDownvoteClickListener()
+    fun onDownvoteClickListener(messageId: String)
 }

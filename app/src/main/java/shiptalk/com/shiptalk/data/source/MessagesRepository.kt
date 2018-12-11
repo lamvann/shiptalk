@@ -68,7 +68,7 @@ class MessagesRepository(private val messageService: MessageService) : MessagesD
     }
 
     override fun getMessagesFromChannel(channelId: String, callback: MessagesDataSource.GetMessagesCallback) {
-        messageService.getMessagesFromChannel(channelId, object: MessagesDataSource.GetMessagesCallback{
+        messageService.getMessagesFromChannel(channelId, object: MessagesDataSource.GetMessagesCallback {
             override fun onMessagesLoaded(messages: List<Message>) {
                 cachedMessages.clear()
                 messages.forEach { message ->

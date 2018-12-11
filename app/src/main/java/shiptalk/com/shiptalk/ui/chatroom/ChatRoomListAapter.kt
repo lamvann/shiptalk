@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.layout_item_message.view.*
+import kotlinx.android.synthetic.main.message_thread_fragment.view.*
 import shiptalk.com.shiptalk.R
 import shiptalk.com.shiptalk.data.Message
 
@@ -25,7 +27,12 @@ class ChatRoomListAapter(
     }
 
     override fun onBindViewHolder(holder: ChatRoomListAapter.ViewHolder, position: Int) {
-//        holder.itemView.tvExampleMEssage = messages[position].message
+        messages?.let { messages ->
+            holder.itemView.conversation_text.setText(messages[position].message)
+            holder.itemView.okay_icon.setOnClickListener{ callback.onUpvoteClickListener(messages[position].messageId.toString()) }
+            holder.itemView.dislike_icon.setOnClickListener{ callback.onDownvoteClickListener(messages[position].messageId.toString()) }
+            holder.itemView.vote_count.setText(messages[position].voteCount.toString())
+        }
     }
 
     fun updateMessages(messages: List<Message>?){
