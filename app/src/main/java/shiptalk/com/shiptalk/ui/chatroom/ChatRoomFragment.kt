@@ -27,11 +27,6 @@ class ChatRoomFragment : BaseFragment(), OnMessageItemClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.chat_room_fragment, container, false)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
         parentActivity = activity as ChatRoomActivity
         viewModel = parentActivity.obtainViewModel()
         //Instantiate List Adapter
@@ -40,6 +35,12 @@ class ChatRoomFragment : BaseFragment(), OnMessageItemClickListener {
             parentActivity,
             this
         )
+//        setObservers()
+        return inflater.inflate(R.layout.chat_room_fragment, container, false)
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
