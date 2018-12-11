@@ -16,7 +16,14 @@ class MessageThreadViewModel(
     private val userRepository: UserRepository
 ) : BaseViewModel(), MessagesDataSource.GetMessagesCallback,
     MessagesDataSource.GetSentMessageCallback,
-    MessagesDataSource.GetVoteCallback {
+    MessagesDataSource.GetVoteCallback, MessagesDataSource.GetNewMessageCallback {
+    override fun onMessageLoaded(message: Message) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onMessageNotLoaded(error: ResponseError) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
     private var _onNotVoted : MutableLiveData<Boolean> = MutableLiveData()
     val onNotVoted: MutableLiveData<Boolean>
@@ -59,7 +66,7 @@ class MessageThreadViewModel(
         _onSentMessage.value = false
     }
 
-    override fun onMessagesLoaded(messages: List<Message>) {
+    override fun onMessagesLoaded(messages: ArrayList<Message>) {
         _onMessagesLoaded.value = messages
         _onMessagesResponse.value = true
     }
@@ -70,7 +77,7 @@ class MessageThreadViewModel(
     }
 
     fun getMessagesFromChatRoomChannel(channelId: String) {
-        messagesRepository.getMessagesFromChannel(channelId, this)
+        messagesRepository.getMessagesFromChannel(channelId, this, this)
     }
 
     fun sendMessage(message: String, channelId: String){
@@ -84,8 +91,6 @@ class MessageThreadViewModel(
     fun getMessageFromCache(messageId: String) : Message? {
         return messagesRepository.cachedMessages[messageId]
     }
-
-
 
     fun upvoteMessage(messageId: String){
         messagesRepository.upvoteMessage(messageId, Constants.CHATROOM_CHANNEL_ID, this)

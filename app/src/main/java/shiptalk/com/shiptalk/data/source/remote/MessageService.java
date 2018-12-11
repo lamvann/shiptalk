@@ -20,6 +20,7 @@ import shiptalk.com.shiptalk.data.ResponseError;
 import shiptalk.com.shiptalk.data.source.MessagesDataSource;
 import shiptalk.com.shiptalk.utils.Constants;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class MessageService implements MessagesDataSource {
@@ -87,9 +88,9 @@ public class MessageService implements MessagesDataSource {
         pubNub.addListener(subscribeCallback);
     }
 
-    private List<Message> filterUniqueMessages(List<Message> unfilteredMessages) {
+    private ArrayList<Message> filterUniqueMessages(List<Message> unfilteredMessages) {
         if (unfilteredMessages.size() < 2) {
-            return unfilteredMessages;
+            return new ArrayList<>(unfilteredMessages);
         }
 
         HashMap<String, Message> uniqueMessages = new HashMap<>();
