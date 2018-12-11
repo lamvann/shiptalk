@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.layout_comment.view.*
 import kotlinx.android.synthetic.main.layout_item_message.view.*
 import shiptalk.com.shiptalk.R
 import shiptalk.com.shiptalk.data.Message
@@ -27,8 +28,10 @@ class MessageThreadListAdapter(
     }
 
     override fun onBindViewHolder(holder: MessageThreadListAdapter.ViewHolder, position: Int) {
+
         messages?.let { messages ->
-            holder.itemView.conversation_text.setText(messages[position].message)
+            holder.itemView.comment.setText(messages[position].message)
+//            holder.itemView.avatar.setImageDrawable()
         }
     }
 

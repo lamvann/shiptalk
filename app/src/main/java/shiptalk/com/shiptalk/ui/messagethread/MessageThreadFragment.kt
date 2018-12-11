@@ -48,7 +48,7 @@ class MessageThreadFragment : BaseFragment(), OnMessageItemClickListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
+    ) : View {
         parentActivity = activity as MessageThreadActivity
         viewModel = parentActivity.obtainViewModel()
 
@@ -66,6 +66,7 @@ class MessageThreadFragment : BaseFragment(), OnMessageItemClickListener {
             parentActivity.goToChatRoomActivity()
             parentActivity.finish()
         }
+
         return inflater.inflate(R.layout.message_thread_fragment, container, false)
     }
 

@@ -67,13 +67,13 @@ class MessageThreadViewModel(
     }
 
     override fun onMessagesLoaded(messages: ArrayList<Message>) {
-        _onMessagesLoaded.value = messages
-        _onMessagesResponse.value = true
+        _onMessagesLoaded.postValue(messages)
+        _onMessagesResponse.postValue(true)
     }
 
     override fun onMessagesNotLoaded(error: ResponseError) {
-        _onMessagesNotLoaded.value = error.errorMessage
-        _onMessagesResponse.value = false
+        _onMessagesNotLoaded.postValue(error.errorMessage)
+        _onMessagesResponse.postValue(false)
     }
 
     fun getMessagesFromChatRoomChannel(channelId: String) {

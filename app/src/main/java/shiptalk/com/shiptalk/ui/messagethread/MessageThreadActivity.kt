@@ -3,11 +3,9 @@ package shiptalk.com.shiptalk.ui.messagethread
 import android.os.Bundle
 import kotlinx.android.synthetic.main.layout_item_message.*
 import kotlinx.android.synthetic.main.message_thread_activity.*
-import kotlinx.android.synthetic.main.message_thread_fragment.*
 import shiptalk.com.shiptalk.R
-import shiptalk.com.shiptalk.ui.BaseActivity
-
 import shiptalk.com.shiptalk.data.Message
+import shiptalk.com.shiptalk.ui.BaseActivity
 import shiptalk.com.shiptalk.ui.chatroom.NewPostDialog
 import shiptalk.com.shiptalk.utils.Constants.MESSAGE_ID
 
