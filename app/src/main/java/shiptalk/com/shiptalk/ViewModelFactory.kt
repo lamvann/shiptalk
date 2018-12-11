@@ -32,7 +32,8 @@ class ViewModelFactory private constructor(
                     ChatRoomViewModel(messagesRepository,
                         userRepository)
                 isAssignableFrom(MessageThreadViewModel::class.java) ->
-                    MessageThreadViewModel()
+                    MessageThreadViewModel(messagesRepository,
+                        userRepository)
                 else ->
                     throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
             }

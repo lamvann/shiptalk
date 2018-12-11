@@ -1,8 +1,7 @@
 package shiptalk.com.shiptalk.ui
 
 import android.app.Application
-import android.os.Bundle
-import android.os.PersistableBundle
+import android.content.Intent
 import android.view.Window
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
@@ -12,6 +11,7 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
 import shiptalk.com.shiptalk.ViewModelFactory
+import shiptalk.com.shiptalk.ui.chatroom.ChatRoomActivity
 
 abstract class BaseActivity : AppCompatActivity() {
 
@@ -35,5 +35,10 @@ abstract class BaseActivity : AppCompatActivity() {
     fun hideTopBar() {
         this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN)
         this.requestWindowFeature(Window.FEATURE_NO_TITLE)
+    }
+
+    fun goToChatRoomActivity(){
+        val intent = Intent(this, ChatRoomActivity::class.java)
+        startActivity(intent)
     }
 }
