@@ -44,12 +44,15 @@ class LoginFragment : BaseFragment() {
     }
 
     override fun setObservers() {
+
     }
 
     override fun initUIComponents() {
+
     }
 
     override fun setListeners() {
+
     }
 
 }

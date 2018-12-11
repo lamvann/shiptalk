@@ -1,6 +1,8 @@
 package shiptalk.com.shiptalk.ui
 
 import android.app.Application
+import android.os.Bundle
+import android.os.PersistableBundle
 import android.view.Window
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
@@ -31,7 +33,7 @@ abstract class BaseActivity : AppCompatActivity() {
     abstract fun obtainViewModel(): BaseViewModel
 
     fun hideTopBar() {
+        this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN)
         this.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
     }
 }

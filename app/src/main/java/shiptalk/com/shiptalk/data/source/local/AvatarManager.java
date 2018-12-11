@@ -54,7 +54,7 @@ public class AvatarManager {
         avatarId = avatars.get(avatarSequence);
         avatarFromUserAndChannel.put(userAndChannel, avatarId);
 
-        if(avatarSequence < avatars.size()-1){
+        if(avatarSequence < avatars.size()-1) {
             avatarSequence++;
             avatarSequenceByChannel.put(channel,avatarSequence);
         }
