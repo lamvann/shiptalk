@@ -12,6 +12,7 @@ class ChatRoomActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        hideTopBar()
         setContentView(R.layout.chat_room_activity)
         viewModel = obtainViewModel()
         if (savedInstanceState == null) {
@@ -20,5 +21,4 @@ class ChatRoomActivity : BaseActivity() {
                 .commitNow()
         }
     }
-
 }

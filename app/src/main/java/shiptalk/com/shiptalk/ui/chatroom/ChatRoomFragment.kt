@@ -11,16 +11,18 @@ import shiptalk.com.shiptalk.R
 import shiptalk.com.shiptalk.ui.BaseFragment
 
 class ChatRoomFragment : BaseFragment(), OnMessageItemClickListener {
-    override fun onMessageItemClickListener(messageId: String) {
-
-    }
 
     private lateinit var viewModel: ChatRoomViewModel
     private lateinit var parentActivity: ChatRoomActivity
     private lateinit var chatRoomListAdapter: ChatRoomListAapter
 
     companion object {
+
         fun newInstance() = ChatRoomFragment()
+    }
+
+    override fun onMessageItemClickListener(messageId: String) {
+
     }
 
     override fun onCreateView(

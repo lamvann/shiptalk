@@ -8,8 +8,8 @@ class AvatarsRepository(
     private val avatarManager: AvatarManager
 ) : AvatarsDataSource {
 
-    override fun getRandomAvatarForConversation(userId: String, channelId: String): String {
-        return "" //TODO ->>> avatarManager.getNextAvailableAvatarForUserAndChannel(userId, channelId) Somehow get the drawable with the int avatarId
+    override fun getRandomAvatarForConversation(userId: String, channelId: String): Int {
+        return avatarManager.getNextAvailableAvatarForUserAndChannel(userId, channelId)
     }
 
     companion object {
