@@ -4,7 +4,7 @@ import shiptalk.com.shiptalk.data.Conversation
 import javax.inject.Singleton
 
 @Singleton
-class ConversationsRepository : ConversationsDataSource{
+class ConversationsRepository : ConversationsDataSource{//TO GET CHANNELS TODO if not used, delete it
 
     override fun getActiveConversations(callback: ConversationsDataSource.GetActiveConversationsCallback): ArrayList<Conversation> {
         return ArrayList()
@@ -12,13 +12,13 @@ class ConversationsRepository : ConversationsDataSource{
 
     companion object {
 
-        private var INSTANCE: AvatarsRepository? = null
+        private var INSTANCE: ConversationsRepository? = null
 
         @JvmStatic
         fun getInstance() =
-            INSTANCE ?: synchronized(AvatarsRepository::class.java) {
+            INSTANCE ?: synchronized(ConversationsRepository::class.java) {
                 INSTANCE
-                    ?: AvatarsRepository(
+                    ?: ConversationsRepository(
                     )
                         .also { INSTANCE = it }
             }

@@ -29,7 +29,7 @@ class ViewModelFactory private constructor(
                 isAssignableFrom(LoginViewModel::class.java) ->
                     LoginViewModel(userRepository)
                 isAssignableFrom(ChatRoomViewModel::class.java) ->
-                    ChatRoomViewModel()
+                    ChatRoomViewModel(messagesRepository)
                 isAssignableFrom(MessageThreadViewModel::class.java) ->
                     MessageThreadViewModel()
                 else ->
