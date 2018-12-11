@@ -1,12 +1,15 @@
 package shiptalk.com.shiptalk.ui.messagethread
 
 import android.os.Bundle
+import android.view.View
+import android.widget.TextView
 import kotlinx.android.synthetic.main.layout_item_message.*
 import kotlinx.android.synthetic.main.message_thread_activity.*
 import shiptalk.com.shiptalk.R
 import shiptalk.com.shiptalk.data.Message
 import shiptalk.com.shiptalk.ui.BaseActivity
 import shiptalk.com.shiptalk.ui.chatroom.NewPostDialog
+import shiptalk.com.shiptalk.ui.chatroom.OnMessageItemClickListener
 import shiptalk.com.shiptalk.utils.Constants.MESSAGE_ID
 
 class MessageThreadActivity : BaseActivity() {
@@ -60,8 +63,9 @@ class MessageThreadActivity : BaseActivity() {
 
     fun initComponents(){
         vote_count.text = messageParent.voteCount.toString()
-        okay_icon.setOnClickListener { viewModel.upvoteMessage(messageParent.messageId.toString()) }
-        dislike_icon.setOnClickListener { viewModel.downvoteMessage(messageParent.messageId.toString()) }
+        okay_icon.visibility = View.INVISIBLE
+        dislike_icon.visibility = View.INVISIBLE
         conversation_text.text = messageParent.message
+
     }
 }

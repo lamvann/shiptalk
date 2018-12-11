@@ -12,18 +12,7 @@ import shiptalk.com.shiptalk.ui.BaseFragment
 import shiptalk.com.shiptalk.ui.chatroom.OnMessageItemClickListener
 import shiptalk.com.shiptalk.utils.Constants.MESSAGE_ID
 
-class MessageThreadFragment : BaseFragment(), OnMessageItemClickListener {
-    override fun onMessageItemClickListener(messageId: String) {
-
-    }
-
-    override fun onUpvoteClickListener(messageId: String) {
-
-    }
-
-    override fun onDownvoteClickListener(messageId: String) {
-
-    }
+class MessageThreadFragment : BaseFragment() {
 
     private lateinit var viewModel: MessageThreadViewModel
     private lateinit var parentActivity: MessageThreadActivity
@@ -38,6 +27,12 @@ class MessageThreadFragment : BaseFragment(), OnMessageItemClickListener {
             messageThreadFragment.arguments = args
             return messageThreadFragment
         }
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        parentActivity.initComponents()
+        parentActivity.setListeners()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -55,8 +50,7 @@ class MessageThreadFragment : BaseFragment(), OnMessageItemClickListener {
         //Instantiate List Adapter
         messageThreadListAdapter = MessageThreadListAdapter(
             parentActivity.obtainViewModel().onMessagesLoaded.value,
-            parentActivity,
-            this
+            parentActivity
         )
         setObservers()
         messageId = arguments?.getString(MESSAGE_ID, null)

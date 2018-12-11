@@ -13,8 +13,7 @@ import shiptalk.com.shiptalk.ui.chatroom.OnMessageItemClickListener
 
 class MessageThreadListAdapter(
     private var messages: List<Message>?,
-    private val context: Context,
-    var callback: OnMessageItemClickListener
+    private val context: Context
 ) : RecyclerView.Adapter<MessageThreadListAdapter.ViewHolder>() {
     override fun getItemCount(): Int {
         return messages?.size ?: 0

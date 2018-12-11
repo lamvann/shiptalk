@@ -14,6 +14,7 @@
         android:fontFamily="@font/proxima_nova_regular"
         android:textSize="150dp"
         app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginRight="4dp"
         android:textColor="#dadada"/>
 
     <ImageView
@@ -21,6 +22,7 @@
         android:layout_width="30dp"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_okay"
+        android:layout_marginRight="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>
 

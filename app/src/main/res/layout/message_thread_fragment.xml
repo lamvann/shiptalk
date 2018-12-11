@@ -6,30 +6,6 @@
         android:layout_height="match_parent"
         android:animateLayoutChanges="true"
         tools:context=".ui.messagethread.MessageThreadActivity">
-    <LinearLayout
-            android:id="@+id/topRaccoon"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:background="@color/colorPrimary">
-
-        <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                android:src="@drawable/raccoon_icon"
-                android:layout_gravity="center_horizontal"/>
-    </LinearLayout>
-
-    <include
-            android:id="@+id/message_parent"
-            layout="@layout/layout_item_message"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/topRaccoon" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipeRefreshLayout"
@@ -51,16 +27,5 @@
                 app:layout_constraintTop_toTopOf="parent"/>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/floatingActionButton_comment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="@dimen/fab_margin"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:backgroundTint="@color/colorPrimary"
-            app:srcCompat="@drawable/ic_add_post"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
