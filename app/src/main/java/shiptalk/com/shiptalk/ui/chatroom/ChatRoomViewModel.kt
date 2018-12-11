@@ -28,14 +28,17 @@ class ChatRoomViewModel(
 
     init {
         _onMessagesResponse.value = false
+        getMessagesFromChatRoomChannel()
     }
 
     override fun onMessagesLoaded(messages: List<Message>) {
         _onMessagesLoaded.value = messages
+        _onMessagesResponse.value = true
     }
 
     override fun onMessagesNotLoaded(error: ResponseError) {
         _onMessagesNotLoaded.value = error.errorMessage
+        _onMessagesResponse.value = false
     }
 
     fun getMessagesFromChatRoomChannel(){

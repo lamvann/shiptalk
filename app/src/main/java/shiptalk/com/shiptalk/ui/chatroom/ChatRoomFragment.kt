@@ -4,13 +4,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.android.synthetic.main.chat_room_fragment.*
 import shiptalk.com.shiptalk.R
 import shiptalk.com.shiptalk.ui.BaseFragment
 
-class ChatRoomFragment : BaseFragment() {
+class ChatRoomFragment : BaseFragment(), OnMessageItemClickListener {
+    override fun onMessageItemClickListener(messageId: String) {
+
+    }
 
     private lateinit var viewModel: ChatRoomViewModel
     private lateinit var parentActivity: ChatRoomActivity
+    private lateinit var chatRoomListAdapter: ChatRoomListAapter
 
     companion object {
         fun newInstance() = ChatRoomFragment()
@@ -27,15 +34,39 @@ class ChatRoomFragment : BaseFragment() {
         super.onActivityCreated(savedInstanceState)
         parentActivity = activity as ChatRoomActivity
         viewModel = parentActivity.obtainViewModel()
-        // TODO: Use the ViewModel
+        //Instantiate List Adapter
+        chatRoomListAdapter = ChatRoomListAapter(
+            parentActivity.obtainViewModel().onMessagesLoaded.value,
+            parentActivity,
+            this
+        )
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initUIComponents()
     }
 
     override fun setObservers() {
-
+        viewModel.onMessagesResponse.observe(this, Observer {
+            if(it == true){
+                chatRoomListAdapter.updateMessages(viewModel.onMessagesLoaded.value)
+            }
+            else if (it == false){
+                //display error  viewModel.onMessagesNotLoaded.value
+            }
+        })
     }
 
     override fun initUIComponents() {
-
+        rvChatRoom.apply {
+            setHasFixedSize(true)
+            layoutManager = LinearLayoutManager(context)
+            adapter = chatRoomListAdapter
+        }
+//        swipeRefreshLayout.setColorSchemeColors(resources.getColor(R.color.primaryColor),
+//            resources.getColor(R.color.primaryDarkColor),
+//            resources.getColor(R.color.accentColor))
     }
 
     override fun setListeners() {
