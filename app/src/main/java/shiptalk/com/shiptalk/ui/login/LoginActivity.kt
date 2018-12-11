@@ -12,6 +12,7 @@ class LoginActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        hideTopBar()
         setContentView(R.layout.login_activity)
         viewModel = obtainViewModel()
         if (savedInstanceState == null) {
@@ -20,5 +21,7 @@ class LoginActivity : BaseActivity() {
                 .commitNow()
         }
     }
+
+
 
 }
