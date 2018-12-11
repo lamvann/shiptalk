@@ -5,5 +5,5 @@ import javax.inject.Singleton
 
 @Singleton
 class MessageThreadViewModel : BaseViewModel() {
-    // TODO: Implement the ViewModel
+
 }
