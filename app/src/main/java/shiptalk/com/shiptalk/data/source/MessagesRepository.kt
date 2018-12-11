@@ -5,6 +5,13 @@ import javax.inject.Singleton
 
 @Singleton
 class MessagesRepository(private val messageService: MessageService) : MessagesDataSource {
+    override fun sendMessageForChannel(
+        message: Map<String, Any>,
+        channelId: String,
+        callback: MessagesDataSource.GetSentMessageCallback
+    ) {
+        messageService.sendMessageForChannel(message, channelId, callback)
+    }
 
     override fun getMessagesFromChannel(channelId: String, callback: MessagesDataSource.GetMessagesCallback) {
         messageService.getMessagesFromChannel(channelId, callback)

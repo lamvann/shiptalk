@@ -35,7 +35,7 @@ class ChatRoomFragment : BaseFragment(), OnMessageItemClickListener {
             parentActivity,
             this
         )
-//        setObservers()
+        setObservers()
         return inflater.inflate(R.layout.chat_room_fragment, container, false)
     }
 

@@ -5,14 +5,16 @@ import shiptalk.com.shiptalk.data.Message
 import shiptalk.com.shiptalk.data.ResponseError
 import shiptalk.com.shiptalk.data.source.MessagesDataSource
 import shiptalk.com.shiptalk.data.source.MessagesRepository
+import shiptalk.com.shiptalk.data.source.UserRepository
 import shiptalk.com.shiptalk.ui.BaseViewModel
 import shiptalk.com.shiptalk.utils.Constants.CHATROOM_CHANNEL_ID
 import javax.inject.Singleton
 
 @Singleton
 class ChatRoomViewModel(
-    private val messagesRepository: MessagesRepository
-) : BaseViewModel(), MessagesDataSource.GetMessagesCallback {
+    private val messagesRepository: MessagesRepository,
+    private val userRepository: UserRepository
+) : BaseViewModel(), MessagesDataSource.GetMessagesCallback, MessagesDataSource.GetSentMessageCallback {
 
     private var _onMessagesLoaded : MutableLiveData<List<Message>> = MutableLiveData()
     val onMessagesLoaded: MutableLiveData<List<Message>>
@@ -26,9 +28,23 @@ class ChatRoomViewModel(
     val onMessagesResponse: MutableLiveData<Boolean>
         get() = _onMessagesResponse
 
+    private var _onSentMessage : MutableLiveData<Boolean> = MutableLiveData()
+    val onSentMessage: MutableLiveData<Boolean>
+        get() = _onSentMessage
+
     init {
+        _onSentMessage.value = false
         _onMessagesResponse.value = false
         getMessagesFromChatRoomChannel()
+        sendMessage("hola amigos")
+    }
+
+    override fun onMessageSent() {
+        _onSentMessage.value = true
+    }
+
+    override fun onMessageNotSent(error: ResponseError) {
+        _onSentMessage.value = false
     }
 
     override fun onMessagesLoaded(messages: List<Message>) {
@@ -43,6 +59,16 @@ class ChatRoomViewModel(
 
     fun getMessagesFromChatRoomChannel(){
         messagesRepository.getMessagesFromChannel(CHATROOM_CHANNEL_ID, this)
+    }
+
+    fun sendMessage(message: String){
+        val messageObject = Message(
+            message = message,
+            senderId = userRepository.user?.userId
+        )
+//        val jsonElement = Gson()
+//        jsonElement.toJson(messageObject)
+        messagesRepository.sendMessageForChannel(messageObject.toMap(), CHATROOM_CHANNEL_ID, this)
     }
 
 }

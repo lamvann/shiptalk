@@ -35,6 +35,7 @@ class LoginFragment : BaseFragment() {
         talk_button.setOnClickListener {
             val username = choose_username.text
             if (!username.isEmpty()) {
+                viewModel.getLoggedInUser(username.toString())
                 val intent = Intent(activity, ChatRoomActivity::class.java)
                 intent.putExtra(EXTRA_USERNAME, username)
                 startActivity(intent)

@@ -7,8 +7,15 @@ interface MessagesDataSource {
 
     fun getMessagesFromChannel(channelId: String, callback: GetMessagesCallback)
 
+    fun sendMessageForChannel(message: Map<String, Any>, channelId: String, callback: GetSentMessageCallback)
+
     interface GetMessagesCallback{
         fun onMessagesLoaded(messages: List<Message>)
         fun onMessagesNotLoaded(error: ResponseError)
+    }
+
+    interface GetSentMessageCallback{
+        fun onMessageSent()
+        fun onMessageNotSent(error: ResponseError)
     }
 }

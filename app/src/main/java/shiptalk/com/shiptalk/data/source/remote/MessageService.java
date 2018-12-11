@@ -2,9 +2,11 @@ package shiptalk.com.shiptalk.data.source.remote;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonSyntaxException;
 import com.pubnub.api.PNConfiguration;
 import com.pubnub.api.PubNub;
 import com.pubnub.api.callbacks.PNCallback;
+import com.pubnub.api.models.consumer.PNPublishResult;
 import com.pubnub.api.models.consumer.PNStatus;
 import com.pubnub.api.models.consumer.history.PNHistoryItemResult;
 import com.pubnub.api.models.consumer.history.PNHistoryResult;
@@ -16,6 +18,7 @@ import shiptalk.com.shiptalk.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class MessageService implements MessagesDataSource {
 
@@ -35,9 +38,11 @@ public class MessageService implements MessagesDataSource {
 
                             List<Message> messages = new ArrayList<>();
                             for (PNHistoryItemResult pnHistoryItemResult : result.getMessages()) {
-                                messages.add(jsonToMessage(pnHistoryItemResult.getEntry()));
+                                Message message = jsonToMessage(pnHistoryItemResult.getEntry());
+                                if(message != null && message.isValidated()){
+                                    messages.add(message);
+                                }
                             }
-
                             callback.onMessagesLoaded(messages);
                         }
                         else{
@@ -55,6 +60,29 @@ public class MessageService implements MessagesDataSource {
     }
 
     private Message jsonToMessage(JsonElement jsonElement) {
-        return gson.fromJson(jsonElement, Message.class);
+        try{
+            return gson.fromJson(jsonElement, Message.class);
+        }
+        catch(JsonSyntaxException e){
+            return null;
+        }
+    }
+
+    @Override
+    public void sendMessageForChannel(@NotNull Map message, @NotNull String channelId, final @NotNull GetSentMessageCallback callback) {
+        pubNub.publish()
+                .channel(channelId)
+                .message(message)
+                .async(new PNCallback<PNPublishResult>() {
+                    @Override
+                    public void onResponse(PNPublishResult result, PNStatus status) {
+                        if (!status.isError()) {
+                            callback.onMessageSent();
+                        }
+                        else{
+                            callback.onMessageNotSent(new ResponseError(0, "Some error sending message"));
+                        }
+                    }
+                });
     }
 }
