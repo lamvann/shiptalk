@@ -9,9 +9,12 @@ import kotlinx.android.synthetic.main.layout_comment.view.*
 import kotlinx.android.synthetic.main.layout_item_message.view.*
 import shiptalk.com.shiptalk.R
 import shiptalk.com.shiptalk.data.Message
+import shiptalk.com.shiptalk.data.source.local.AvatarManager
 import shiptalk.com.shiptalk.ui.chatroom.OnMessageItemClickListener
 
 class MessageThreadListAdapter(
+    private var channelId: String,
+    private var userId: String,
     private var messages: List<Message>?,
     private val context: Context
 ) : RecyclerView.Adapter<MessageThreadListAdapter.ViewHolder>() {
@@ -27,10 +30,11 @@ class MessageThreadListAdapter(
     }
 
     override fun onBindViewHolder(holder: MessageThreadListAdapter.ViewHolder, position: Int) {
-
         messages?.let { messages ->
-            holder.itemView.comment.setText(messages[position].message)
-//            holder.itemView.avatar.setImageDrawable()
+            holder.itemView.comment.text = messages[position].message
+            if(messages[position].senderId != userId){
+                holder.itemView.avatar.setImageResource(AvatarManager.getINSTANCE().getNextAvailableAvatarForUserAndChannel(messages[position].senderId, channelId))
+            }
         }
     }
 

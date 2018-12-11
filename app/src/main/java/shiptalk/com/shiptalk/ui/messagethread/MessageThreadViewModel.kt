@@ -100,4 +100,8 @@ class MessageThreadViewModel(
         messagesRepository.downvoteMessage(messageId, Constants.CHATROOM_CHANNEL_ID, this)
     }
 
+    fun getLoggedInUser() : String {
+        return userRepository.getLoggedInUser("whatever")?.userId.toString()
+    }
+
 }

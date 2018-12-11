@@ -46,15 +46,16 @@ class MessageThreadFragment : BaseFragment() {
     ) : View {
         parentActivity = activity as MessageThreadActivity
         viewModel = parentActivity.obtainViewModel()
-
-        //Instantiate List Adapter
-        messageThreadListAdapter = MessageThreadListAdapter(
-            parentActivity.obtainViewModel().onMessagesLoaded.value,
-            parentActivity
-        )
         setObservers()
         messageId = arguments?.getString(MESSAGE_ID, null)
         parentActivity.channelId = "$messageId _channel"
+        //Instantiate List Adapter
+        messageThreadListAdapter = MessageThreadListAdapter(
+            parentActivity.channelId.toString(),
+            viewModel.getLoggedInUser(),
+            parentActivity.obtainViewModel().onMessagesLoaded.value,
+            parentActivity
+        )
         viewModel.getMessagesFromChatRoomChannel(parentActivity.channelId.toString())
         if(messageId == null){
             parentActivity.goToChatRoomActivity()
