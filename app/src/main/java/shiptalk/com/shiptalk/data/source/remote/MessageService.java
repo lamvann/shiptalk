@@ -73,7 +73,7 @@ public class MessageService implements MessagesDataSource {
             }
         }
 
-        return (List<Message>) uniqueMessages.values();
+        return new ArrayList<>(uniqueMessages.values());
     }
 
     public MessageService() {
