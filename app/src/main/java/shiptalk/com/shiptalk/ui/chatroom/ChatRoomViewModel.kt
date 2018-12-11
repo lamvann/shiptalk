@@ -36,7 +36,6 @@ class ChatRoomViewModel(
         _onSentMessage.value = false
         _onMessagesResponse.value = false
         getMessagesFromChatRoomChannel()
-        sendMessage("hola amigos")
     }
 
     override fun onMessageSent() {
@@ -66,8 +65,6 @@ class ChatRoomViewModel(
             message = message,
             senderId = userRepository.user?.userId
         )
-//        val jsonElement = Gson()
-//        jsonElement.toJson(messageObject)
         messagesRepository.sendMessageForChannel(messageObject.toMap(), CHATROOM_CHANNEL_ID, this)
     }
 
