@@ -71,6 +71,9 @@ public class MessageService implements MessagesDataSource {
                     uniqueMessages.put(message.getMessageId(), message);
                 }
             }
+            else{
+                uniqueMessages.put(message.getMessageId(), message);
+            }
         }
 
         return new ArrayList<>(uniqueMessages.values());
