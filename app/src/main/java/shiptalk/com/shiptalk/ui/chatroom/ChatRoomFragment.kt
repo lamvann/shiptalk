@@ -52,12 +52,7 @@ class ChatRoomFragment : BaseFragment(), OnMessageItemClickListener {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        floatingActionButton.setOnClickListener {
-            activity?.let {
-                val dialog = NewPostDialog(it).show()
-
-            }
-        }
+        setListeners()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -82,13 +77,19 @@ class ChatRoomFragment : BaseFragment(), OnMessageItemClickListener {
             layoutManager = LinearLayoutManager(context)
             adapter = chatRoomListAdapter
         }
-//        swipeRefreshLayout.setColorSchemeColors(resources.getColor(R.color.primaryColor),
-//            resources.getColor(R.color.primaryDarkColor),
-//            resources.getColor(R.color.accentColor))
     }
 
     override fun setListeners() {
+        floatingActionButton.setOnClickListener {
+            activity?.let {
+                val dialog = NewPostDialog(parentActivity).show()
 
+            }
+        }
+
+        swipeRefreshLayout.setOnRefreshListener {
+            swipeRefreshLayout.isRefreshing = false
+            viewModel.getMessagesFromChatRoomChannel()
+        }
     }
-
 }

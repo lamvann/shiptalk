@@ -22,6 +22,10 @@ class ChatRoomActivity : BaseActivity() {
         }
     }
 
+    fun postMessage(message: String) {
+        viewModel.sendMessage(message)
+    }
+
     override fun onResume() {
         super.onResume()
         viewModel.getMessagesFromChatRoomChannel()
