@@ -6,15 +6,21 @@ import android.content.Context
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import shiptalk.com.shiptalk.data.source.AvatarsRepository
+import shiptalk.com.shiptalk.data.source.MessagesRepository
 import shiptalk.com.shiptalk.data.source.UserLocalDataSource
 import shiptalk.com.shiptalk.data.source.UserRepository
+import shiptalk.com.shiptalk.data.source.local.AvatarManager
+import shiptalk.com.shiptalk.data.source.remote.MessageService
 import shiptalk.com.shiptalk.ui.chatroom.ChatRoomViewModel
 import shiptalk.com.shiptalk.ui.login.LoginViewModel
 import shiptalk.com.shiptalk.ui.messagethread.MessageThreadViewModel
 
 class ViewModelFactory private constructor(
     private val application: Application,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val avatarsRepository: AvatarsRepository,
+    private val messagesRepository: MessagesRepository
 ) : ViewModelProvider.NewInstanceFactory() {
 
     override fun <T : ViewModel> create(modelClass: Class<T>) =
@@ -37,6 +43,14 @@ class ViewModelFactory private constructor(
             return UserRepository.getInstance(UserLocalDataSource(context))
         }
 
+        private fun provideAvatarsRepository(): AvatarsRepository {
+            return AvatarsRepository.getInstance(AvatarManager.getINSTANCE())
+        }
+
+        private fun provideMessagesRepository(): MessagesRepository {
+            return MessagesRepository.getInstance(MessageService())
+        }
+
         @SuppressLint("StaticFieldLeak")
         @Volatile
         private var INSTANCE: ViewModelFactory? = null
@@ -45,7 +59,9 @@ class ViewModelFactory private constructor(
             INSTANCE ?: synchronized(ViewModelFactory::class.java) {
                 INSTANCE ?: ViewModelFactory(
                     application,
-                    provideUserRepository(application.applicationContext)
+                    provideUserRepository(application.applicationContext),
+                    provideAvatarsRepository(),
+                    provideMessagesRepository()
                 )
                     .also { INSTANCE = it }
             }

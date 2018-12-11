@@ -1,27 +1,25 @@
 package shiptalk.com.shiptalk.data.source
 
-import shiptalk.com.shiptalk.data.Message
+import shiptalk.com.shiptalk.data.source.remote.MessageService
 import javax.inject.Singleton
-import javax.security.auth.callback.Callback
 
 @Singleton
-class MessagesRepository() : MessagesDataSource {
+class MessagesRepository(private val messageService: MessageService) : MessagesDataSource {
 
-    override fun getMessagesFromChannel(channelId: String, callback: Callback): ArrayList<Message> {
-        val arrayList = ArrayList<Message>()
-        arrayList.add(Message())
-        return arrayList
+    override fun getMessagesFromChannel(channelId: String, callback: MessagesDataSource.GetMessagesCallback) {
+        messageService.getMessagesFromChannel(channelId, callback)
     }
 
     companion object {
 
-        private var INSTANCE: AvatarsRepository? = null
+        private var INSTANCE: MessagesRepository? = null
 
         @JvmStatic
-        fun getInstance() =
-            INSTANCE ?: synchronized(AvatarsRepository::class.java) {
+        fun getInstance(messageService: MessageService) =
+            INSTANCE ?: synchronized(MessagesRepository::class.java) {
                 INSTANCE
-                    ?: AvatarsRepository(
+                    ?: MessagesRepository(
+                        messageService
                     )
                         .also { INSTANCE = it }
             }

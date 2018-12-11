@@ -1,13 +1,15 @@
-package shiptalk.com.shiptalk;
+package shiptalk.com.shiptalk.data.source.local;
 
 import android.util.Pair;
 
+import javax.inject.Singleton;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Singleton
 public class AvatarManager {
 
     private static AvatarManager INSTANCE;
