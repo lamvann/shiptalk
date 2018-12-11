@@ -8,7 +8,8 @@ class Message(
     var timeCreated: Long? = System.currentTimeMillis(),
     var message: String? = null,
     var voteCount: Int? = 0,
-    var senderAvatar: String? = null
+    var senderAvatar: String? = null,
+    var isBlocked: Boolean? = false
 ) {
 
     fun toMap(): Map<String, Any> {
@@ -20,6 +21,7 @@ class Message(
             if (message != null) message?.let { put("message", it) }
             if (voteCount != null) voteCount?.let { put("voteCount", it) }
             if (senderAvatar != null) senderAvatar?.let { put("senderAvatar", it) }
+            if (isBlocked != null) isBlocked?.let { put("isBlocked", it) }
         }
         return result
     }

@@ -3,7 +3,10 @@ package shiptalk.com.shiptalk.data.source
 import shiptalk.com.shiptalk.data.Message
 import shiptalk.com.shiptalk.data.ResponseError
 import shiptalk.com.shiptalk.data.source.remote.MessageService
+import shiptalk.com.shiptalk.utils.Constants.MAX_NUMBER_DOWNVOTES
+import java.util.*
 import javax.inject.Singleton
+import kotlin.collections.HashMap
 
 @Singleton
 class MessagesRepository(private val messageService: MessageService) : MessagesDataSource {
@@ -19,6 +22,7 @@ class MessagesRepository(private val messageService: MessageService) : MessagesD
             } else {
                 message.voteCount = message.voteCount?.plus(1)
             }
+            message.timeCreated = System.currentTimeMillis()
             messageService.sendMessageForChannel(
                 message.toMap(),
                 channelId,
@@ -45,6 +49,10 @@ class MessagesRepository(private val messageService: MessageService) : MessagesD
             } else {
                 message.voteCount = message.voteCount?.minus(1)
             }
+            if(message.voteCount != null && message.voteCount!! < MAX_NUMBER_DOWNVOTES){
+                message.isBlocked = true
+            }
+            message.timeCreated = System.currentTimeMillis()
             messageService.sendMessageForChannel(
                 message.toMap(),
                 channelId,
@@ -92,7 +100,7 @@ class MessagesRepository(private val messageService: MessageService) : MessagesD
             override fun onMessageLoaded(message: Message) {
                 cachedMessages[message.messageId.toString()] = message
                 cachedMessages = filterUniqueMessages(cachedMessages)
-                callback.onMessagesLoaded(ArrayList(cachedMessages.values.toList()))
+                callback.onMessagesLoaded(orderChronologically(cachedMessages))
             }
 
             override fun onMessageNotLoaded(error: ResponseError) {
@@ -142,6 +150,32 @@ class MessagesRepository(private val messageService: MessageService) : MessagesD
                 uniqueMessages[message.key] = message.value
             }
         }
-        return uniqueMessages
+
+        val uniqueMessagesNoBlockers = HashMap<String, Message>()
+
+        for (message in uniqueMessages.values) {
+            if (!message.isBlocked!!) {
+                uniqueMessagesNoBlockers[message.messageId!!] = message
+            }
+        }
+        return uniqueMessagesNoBlockers
     }
+
+
+    private fun orderChronologically(messages: HashMap<String, Message>): ArrayList<Message> {
+        val messagesList = ArrayList(messages.values)
+        if (messagesList.isEmpty()) {
+            return messagesList
+        }
+        Collections.sort(messagesList, ComparatorClass())
+        return messagesList
+    }
+
+    internal inner class ComparatorClass : Comparator<Message> {
+
+        override fun compare(m1: Message, m2: Message): Int {
+            return m2.timeCreated!!.compareTo(m1.timeCreated!!)
+        }
+    }
+
 }
