@@ -50,6 +50,12 @@ class ChatRoomFragment : BaseFragment(), OnMessageItemClickListener {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        floatingActionButton.setOnClickListener {
+            activity?.let {
+                NewPostDialog(it).show()
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
