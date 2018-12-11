@@ -12,6 +12,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
 import shiptalk.com.shiptalk.ViewModelFactory
 import shiptalk.com.shiptalk.ui.chatroom.ChatRoomActivity
+import shiptalk.com.shiptalk.ui.messagethread.MessageThreadActivity
+import shiptalk.com.shiptalk.utils.Constants.MESSAGE_ID
 
 abstract class BaseActivity : AppCompatActivity() {
 
@@ -39,6 +41,12 @@ abstract class BaseActivity : AppCompatActivity() {
 
     fun goToChatRoomActivity(){
         val intent = Intent(this, ChatRoomActivity::class.java)
+        startActivity(intent)
+    }
+
+    fun goToMessagesThreadActivity(messageId: String){
+        val intent = Intent(this, MessageThreadActivity::class.java)
+        intent.putExtra(MESSAGE_ID, messageId)
         startActivity(intent)
     }
 }

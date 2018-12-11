@@ -7,6 +7,7 @@ import shiptalk.com.shiptalk.data.source.MessagesDataSource
 import shiptalk.com.shiptalk.data.source.MessagesRepository
 import shiptalk.com.shiptalk.data.source.UserRepository
 import shiptalk.com.shiptalk.ui.BaseViewModel
+import shiptalk.com.shiptalk.utils.Constants
 import javax.inject.Singleton
 
 @Singleton
@@ -14,7 +15,12 @@ class MessageThreadViewModel(
     private val messagesRepository: MessagesRepository,
     private val userRepository: UserRepository
 ) : BaseViewModel(), MessagesDataSource.GetMessagesCallback,
-    MessagesDataSource.GetSentMessageCallback {
+    MessagesDataSource.GetSentMessageCallback,
+    MessagesDataSource.GetVoteCallback {
+
+    private var _onNotVoted : MutableLiveData<Boolean> = MutableLiveData()
+    val onNotVoted: MutableLiveData<Boolean>
+        get() = _onNotVoted
 
     private var _onMessagesLoaded : MutableLiveData<List<Message>> = MutableLiveData()
     val onMessagesLoaded: MutableLiveData<List<Message>>
@@ -35,6 +41,14 @@ class MessageThreadViewModel(
     init {
         _onSentMessage.value = false
         _onMessagesResponse.value = false
+    }
+
+    override fun onVoted() {
+        //No need to implement, data should be updated accordingly from pubnub
+    }
+
+    override fun onNotVoted(error: ResponseError) {
+        onNotVoted.value = false
     }
 
     override fun onMessageSent() {
@@ -65,6 +79,20 @@ class MessageThreadViewModel(
             senderId = userRepository.user?.userId
         )
         messagesRepository.sendMessageForChannel(messageObject.toMap(), channelId, this)
+    }
+
+    fun getMessageFromCache(messageId: String) : Message? {
+        return messagesRepository.cachedMessages[messageId]
+    }
+
+
+
+    fun upvoteMessage(messageId: String){
+        messagesRepository.upvoteMessage(messageId, Constants.CHATROOM_CHANNEL_ID, this)
+    }
+
+    fun downvoteMessage(messageId: String){
+        messagesRepository.downvoteMessage(messageId, Constants.CHATROOM_CHANNEL_ID, this)
     }
 
 }

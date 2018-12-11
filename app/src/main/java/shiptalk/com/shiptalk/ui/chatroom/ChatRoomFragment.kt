@@ -1,11 +1,9 @@
 package shiptalk.com.shiptalk.ui.chatroom
 
 import android.os.Bundle
-import android.os.Message
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.chat_room_fragment.*
@@ -32,7 +30,7 @@ class ChatRoomFragment : BaseFragment(), OnMessageItemClickListener {
     }
 
     override fun onMessageItemClickListener(messageId: String) {
-
+        parentActivity.goToMessagesThreadActivity(messageId)
     }
 
     override fun onCreateView(

@@ -4,14 +4,30 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.android.synthetic.main.chat_room_fragment.*
 import shiptalk.com.shiptalk.R
 import shiptalk.com.shiptalk.ui.BaseFragment
+import shiptalk.com.shiptalk.ui.chatroom.OnMessageItemClickListener
 import shiptalk.com.shiptalk.utils.Constants.MESSAGE_ID
 
-class MessageThreadFragment : BaseFragment() {
+class MessageThreadFragment : BaseFragment(), OnMessageItemClickListener {
+    override fun onMessageItemClickListener(messageId: String) {
+
+    }
+
+    override fun onUpvoteClickListener(messageId: String) {
+
+    }
+
+    override fun onDownvoteClickListener(messageId: String) {
+
+    }
 
     private lateinit var viewModel: MessageThreadViewModel
     private lateinit var parentActivity: MessageThreadActivity
+    private lateinit var messageThreadListAdapter: MessageThreadListAdapter
     private var messageId : String? = null
 
     companion object {
@@ -24,12 +40,25 @@ class MessageThreadFragment : BaseFragment() {
         }
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initUIComponents()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         parentActivity = activity as MessageThreadActivity
         viewModel = parentActivity.obtainViewModel()
+
+        //Instantiate List Adapter
+        messageThreadListAdapter = MessageThreadListAdapter(
+            parentActivity.obtainViewModel().onMessagesLoaded.value,
+            parentActivity,
+            this
+        )
+        setObservers()
         messageId = arguments?.getString(MESSAGE_ID, null)
         viewModel.getMessagesFromChatRoomChannel("$messageId _channel")
         if(messageId == null){
@@ -40,11 +69,25 @@ class MessageThreadFragment : BaseFragment() {
     }
 
     override fun setObservers() {
-
+        viewModel.onMessagesResponse.observe(this, Observer {
+            if(it == true){
+                messageThreadListAdapter.updateMessages(viewModel.onMessagesLoaded.value)
+            }
+            else if (it == false){
+                //display error  viewModel.onMessagesNotLoaded.value
+            }
+        })
     }
 
     override fun initUIComponents() {
-
+        rvChatRoom.apply {
+            setHasFixedSize(true)
+            layoutManager = LinearLayoutManager(context)
+            adapter = messageThreadListAdapter
+        }
+//        swipeRefreshLayout.setColorSchemeColors(resources.getColor(R.color.primaryColor),
+//            resources.getColor(R.color.primaryDarkColor),
+//            resources.getColor(R.color.accentColor))
     }
 
     override fun setListeners() {
