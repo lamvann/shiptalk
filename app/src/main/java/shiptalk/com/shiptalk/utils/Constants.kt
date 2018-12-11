@@ -12,4 +12,5 @@ object Constants {
     const val USER_LOGGED_IN = "user_logged_in"
     const val CHATROOM_CHANNEL_ID = "test_channel"//"aqua_channel"
     const val MESSAGE_ID = "message_id"
+    const val MAX_NUMBER_DOWNVOTES = -4
 }

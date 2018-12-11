@@ -110,7 +110,32 @@ public class MessageService implements MessagesDataSource {
             }
         }
 
-        return new ArrayList<>(uniqueMessages.values());
+        HashMap<String, Message> uniqueMessagesNoBlockers = new HashMap<>();
+
+        for(Message message : uniqueMessages.values()){
+            if(!message.isBlocked()){
+                uniqueMessagesNoBlockers.put(message.getMessageId(), message);
+            }
+        }
+
+        return orderChronologically(uniqueMessagesNoBlockers);
+    }
+
+    private ArrayList<Message> orderChronologically(HashMap<String, Message> messages) {
+        ArrayList<Message>  messagesList = new ArrayList<Message>(messages.values());
+        if(messagesList.isEmpty()){
+            return messagesList;
+        }
+        Collections.sort(messagesList, new ComparatorClass());
+        return messagesList;
+    }
+
+    class ComparatorClass implements Comparator<Message>{
+
+        @Override
+        public int compare(Message m1, Message m2) {
+            return m2.getTimeCreated().compareTo(m1.getTimeCreated());
+        }
     }
 
     public MessageService() {
