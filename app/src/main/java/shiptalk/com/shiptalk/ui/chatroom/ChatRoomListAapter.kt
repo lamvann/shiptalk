@@ -11,8 +11,8 @@ import shiptalk.com.shiptalk.data.Message
 class ChatRoomListAapter(
     private var messages: List<Message>?,
     private val context: Context,
-    var callback: OnMessageItemClickListener) :
-    RecyclerView.Adapter<ChatRoomListAapter.ViewHolder>() {
+    var callback: OnMessageItemClickListener
+) : RecyclerView.Adapter<ChatRoomListAapter.ViewHolder>() {
     override fun getItemCount(): Int {
         return messages?.size ?: 0
     }

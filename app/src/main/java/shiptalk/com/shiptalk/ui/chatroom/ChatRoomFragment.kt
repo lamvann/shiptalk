@@ -11,18 +11,25 @@ import shiptalk.com.shiptalk.R
 import shiptalk.com.shiptalk.ui.BaseFragment
 
 class ChatRoomFragment : BaseFragment(), OnMessageItemClickListener {
-
     private lateinit var viewModel: ChatRoomViewModel
+
     private lateinit var parentActivity: ChatRoomActivity
     private lateinit var chatRoomListAdapter: ChatRoomListAapter
-
     companion object {
 
         fun newInstance() = ChatRoomFragment()
-    }
 
+    }
     override fun onMessageItemClickListener(messageId: String) {
 
+    }
+
+    override fun onUpvoteClickListener() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onDownvoteClickListener() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun onCreateView(

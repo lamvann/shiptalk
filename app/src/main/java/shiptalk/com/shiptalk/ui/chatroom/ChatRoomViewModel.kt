@@ -56,7 +56,7 @@ class ChatRoomViewModel(
         _onMessagesResponse.value = false
     }
 
-    fun getMessagesFromChatRoomChannel(){
+    fun getMessagesFromChatRoomChannel() {
         messagesRepository.getMessagesFromChannel(CHATROOM_CHANNEL_ID, this)
     }
 
