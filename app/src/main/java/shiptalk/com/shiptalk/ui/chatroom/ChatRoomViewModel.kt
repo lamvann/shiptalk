@@ -14,11 +14,16 @@ import javax.inject.Singleton
 class ChatRoomViewModel(
     private val messagesRepository: MessagesRepository,
     private val userRepository: UserRepository
-) : BaseViewModel(), MessagesDataSource.GetMessagesCallback, MessagesDataSource.GetSentMessageCallback {
+) : BaseViewModel(), MessagesDataSource.GetMessagesCallback, MessagesDataSource.GetSentMessageCallback,
+    MessagesDataSource.GetVoteCallback {
 
     private var _onMessagesLoaded : MutableLiveData<List<Message>> = MutableLiveData()
     val onMessagesLoaded: MutableLiveData<List<Message>>
         get() = _onMessagesLoaded
+
+    private var _onNotVoted : MutableLiveData<Boolean> = MutableLiveData()
+    val onNotVoted: MutableLiveData<Boolean>
+        get() = _onNotVoted
 
     private var _onMessagesNotLoaded : MutableLiveData<String> = MutableLiveData()
     val onMessagesNotLoaded: MutableLiveData<String>
@@ -56,6 +61,14 @@ class ChatRoomViewModel(
         _onMessagesResponse.value = false
     }
 
+    override fun onVoted() {
+        //No need to implement, data should be updated accordingly from pubnub
+    }
+
+    override fun onNotVoted(error: ResponseError) {
+        onNotVoted.value = false
+    }
+
     fun getMessagesFromChatRoomChannel(){
         messagesRepository.getMessagesFromChannel(CHATROOM_CHANNEL_ID, this)
     }
@@ -66,6 +79,14 @@ class ChatRoomViewModel(
             senderId = userRepository.user?.userId
         )
         messagesRepository.sendMessageForChannel(messageObject.toMap(), CHATROOM_CHANNEL_ID, this)
+    }
+
+    fun upvoteMessage(messageId: String){
+        messagesRepository.upvoteMessage(messageId, CHATROOM_CHANNEL_ID, this)
+    }
+
+    fun downvoteMessage(messageId: String){
+        messagesRepository.downvoteMessage(messageId, CHATROOM_CHANNEL_ID, this)
     }
 
 }

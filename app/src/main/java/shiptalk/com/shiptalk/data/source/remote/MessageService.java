@@ -17,6 +17,7 @@ import shiptalk.com.shiptalk.data.source.MessagesDataSource;
 import shiptalk.com.shiptalk.utils.Constants;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -43,13 +44,36 @@ public class MessageService implements MessagesDataSource {
                                     messages.add(message);
                                 }
                             }
-                            callback.onMessagesLoaded(messages);
+                            callback.onMessagesLoaded(filterUniqueMessages(messages));
                         }
                         else{
                             callback.onMessagesNotLoaded(new ResponseError(0, "Some error retrieving the PubNub messages"));
                         }
                     }
                 });
+    }
+
+    private List<Message> filterUniqueMessages(List<Message> unfilteredMessages){
+        if(unfilteredMessages.size() < 2){
+            return unfilteredMessages;
+        }
+
+        HashMap<String, Message> uniqueMessages= new HashMap<>();
+
+        for(Message message : unfilteredMessages){
+            //Check for concurrency
+            if(uniqueMessages.containsKey(message.getMessageId())){
+                Message messageUnique = uniqueMessages.get(message.getMessageId());
+                if((messageUnique != null)
+                        && (messageUnique.getTimeCreated() != null)
+                        && (message.getTimeCreated() != null)
+                        && messageUnique.getTimeCreated() < message.getTimeCreated()){
+                    uniqueMessages.put(message.getMessageId(), message);
+                }
+            }
+        }
+
+        return (List<Message>) uniqueMessages.values();
     }
 
     public MessageService() {

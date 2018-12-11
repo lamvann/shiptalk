@@ -9,6 +9,11 @@ interface MessagesDataSource {
 
     fun sendMessageForChannel(message: Map<String, Any>, channelId: String, callback: GetSentMessageCallback)
 
+    interface GetVoteCallback {
+        fun onVoted()
+        fun onNotVoted(error: ResponseError)
+    }
+
     interface GetMessagesCallback{
         fun onMessagesLoaded(messages: List<Message>)
         fun onMessagesNotLoaded(error: ResponseError)
