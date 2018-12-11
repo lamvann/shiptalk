@@ -10,6 +10,9 @@ import javax.inject.Singleton
 class LoginViewModel(
     private val userRepository: UserRepository
 ) : BaseViewModel(), UserDataSource {
+    override fun doesUserExist(): Boolean {
+        return userRepository.doesUserExist()
+    }
 
     override fun getLoggedInUser(username: String): User? {
         return userRepository.getLoggedInUser(username)

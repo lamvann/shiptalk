@@ -5,8 +5,13 @@ import shiptalk.com.shiptalk.data.User
 class UserRepository(
     private val userLocalDataSource: UserLocalDataSource
 ) : UserDataSource {
+
     private var _user: User? = null
     val user get() = _user
+
+    override fun doesUserExist(): Boolean {
+        return userLocalDataSource.doesUserExist()
+    }
 
     override fun getLoggedInUser(username: String): User? {
         if (_user == null) {

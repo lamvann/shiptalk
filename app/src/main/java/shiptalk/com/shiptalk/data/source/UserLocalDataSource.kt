@@ -9,14 +9,29 @@ import java.util.*
 
 class UserLocalDataSource(private val applicationContext: Context) : UserDataSource {
 
+    override fun doesUserExist(): Boolean {
+        val sharedPref = applicationContext.getSharedPreferences(
+            SHIPTALK_LOCAL_FILE, Context.MODE_PRIVATE
+        )
+        val gson = Gson()
+        val deviceSerialId = android.os.Build.ID ?: UUID.randomUUID()
+        val savedUser = try {
+            sharedPref.getString(USER_LOGGED_IN, null).let { gson.fromJson(it, User::class.java) }
+        } catch (e: Exception) {
+            null
+        }
+
+        return savedUser != null && deviceSerialId == savedUser.userId
+    }
+
     override fun getLoggedInUser(username: String): User? {
         val sharedPref = applicationContext.getSharedPreferences(
             SHIPTALK_LOCAL_FILE, Context.MODE_PRIVATE
         )
         val gson = Gson()
-        val deviceSerialId = sharedPref.getString(android.os.Build.ID, null) ?: UUID.randomUUID()
+        val deviceSerialId = android.os.Build.ID ?: UUID.randomUUID()
         val savedUser = try {
-            gson.fromJson(USER_LOGGED_IN, User::class.java)
+            sharedPref.getString(USER_LOGGED_IN, null).let { gson.fromJson(it, User::class.java) }
         } catch (e: Exception) {
             null
         }
